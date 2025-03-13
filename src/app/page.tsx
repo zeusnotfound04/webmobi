@@ -17,6 +17,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import CandidateForm from '@/components/Form';
+import Squares from '@/components/SquareBg';
 
 // Define Zod schema for form validation
 const candidateSchema = z.object({
@@ -40,7 +42,8 @@ export default function Home() {
 
   return (
     <div className="h-full w-full">
-    
+      
+    <CandidateForm/>
     </div>
   );
 }

@@ -5,8 +5,10 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-// Import the FileUpload component and its props type
+
 import { FileUpload } from '@/components/ui/FileUpload';
+
+import pdfToText from 'react-pdftotext';
 
 import {
   Form,
@@ -18,7 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-// Define Zod schema for form validation
+
 const candidateSchema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
   email: z.string().email({ message: 'Invalid email address' }),
@@ -38,6 +40,7 @@ export type CandidateFormData = z.infer<typeof candidateSchema>;
 export default function CandidateForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [resumeText , setResumeText] = useState<string | null>(null) 
   
   // Initialize form with Zod resolver
   const form = useForm<CandidateFormData>({
@@ -60,23 +63,35 @@ export default function CandidateForm() {
         setResumeFile(file);
         form.setValue('resumeFile', file);
         console.log('Resume uploaded:', file.name);
+
+
+        pdfToText(file)
+          .then((text) => {
+            console.log('Extracted text:', text);
+            setResumeText(text);
+           
+            form.setValue('experience', text);
+          })
+          .catch((error) => console.error('Failed to extract text from PDF', error));
+
       } else {
         console.error('Invalid file type. Please upload a PDF file.');
-        // You could set an error here or show a notification
-      }
+              }
     }
   };
 
   const onSubmit = async (data: CandidateFormData) => {
     setIsSubmitting(true);
+    console.log("Raw Data ::::::" , data)
     try {
-      // Add the resumeFile from state to ensure it's included
+     
       const formData = {
         ...data,
-        resumeFile: resumeFile
+        resumeFile: resumeFile,
+        resumeText: resumeText,
       };
       
-      // TODO: Implement submission logic
+     
       console.log('Form data:', formData);
     } catch (error) {
       console.error('Error submitting form:', error);
