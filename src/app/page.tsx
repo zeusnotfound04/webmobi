@@ -1,7 +1,9 @@
-import Image from "next/image";
+'use client'
+import type { Candidate , JobDescription } from '@/types';
 import { Upload, Briefcase, Mail, Linkedin, User, Code, BookOpen } from 'lucide-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
+import { useDropzone } from 'react-dropzone';
 
 export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -15,6 +17,13 @@ export default function Home() {
       console.log('File uploaded:', file.name);
     }
   };
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'application/pdf': ['.pdf'],
+    },
+    maxFiles: 1,
+  });
 
   
 
