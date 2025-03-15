@@ -19,6 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Button } from './ui/button';
 
 
 const candidateSchema = z.object({
@@ -80,6 +81,14 @@ export default function CandidateForm() {
     }
   };
 
+  const handleClick = async () => {
+
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
   const onSubmit = async (data: CandidateFormData) => {
     setIsSubmitting(true);
     console.log("Raw Data ::::::" , data)
@@ -109,6 +118,8 @@ export default function CandidateForm() {
             <h1 className="text-4xl font-bold text-white mb-4">AI-Powered Recruitment</h1>
             <p className="text-xl text-white/80">Submit your application and let AI match you with the perfect role</p>
           </div>
+
+          <Button onClick={handleCli}>Create Index</Button>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-xl transition-all duration-300 hover:shadow-2xl">
