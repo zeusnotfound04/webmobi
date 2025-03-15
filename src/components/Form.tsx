@@ -71,8 +71,7 @@ export default function CandidateForm() {
           .then((text) => {
             console.log('Extracted text:', text);
             setResumeText(text);
-           
-            form.setValue('experience', text);
+          
           })
           .catch((error) => console.error('Failed to extract text from PDF', error));
 
@@ -94,17 +93,18 @@ export default function CandidateForm() {
   }
   const onSubmit = async (data: CandidateFormData) => {
     setIsSubmitting(true);
-    console.log("Raw Data ::::::" , data)
+    
     try {
      
       const formData = {
         ...data,
-        resumeFile: resumeFile,
         resumeText: resumeText,
       };
       
+      const response = await axios.post("/api/storeResume" , formData)
+      console.log(response)
      
-      console.log('Form data:', formData);
+      
     } catch (error) {
       console.error('Error submitting form:', error);
     } finally {
@@ -122,7 +122,7 @@ export default function CandidateForm() {
             <p className="text-xl text-white/80">Submit your application and let AI match you with the perfect role</p>
           </div>
 
-          <Button onClick={handleClick}>Create Index</Button>
+          {/* <Button onClick={handleClick}>Create Index</Button> */}
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-xl transition-all duration-300 hover:shadow-2xl">

@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Candidate {
+  id          String   @id @default(uuid())
+  name        String   
+  email       String   @unique
+  linkedinUrl String    
+  resumes     Resume[]
+  skills      String[]
+
+  experience  String?
+  createdAt   DateTime @default(now())
+}
+
+model Resume {
+  id          String   @id   @default(uuid())
+  candidateId String      
+  text        String
+  createdAt   DateTime @default(now())
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  embedding   ResumeEmbedding? // One-to-one relation with ResumeEmbedding
+}
+
+model JobDescription {
+  id          String   @id   @default(uuid())
+  title       String
+  description String
+  skills      String[]
+  createdAt   DateTime @default(now())
+}
+
+model ResumeEmbedding {
+  id        String   @id   @default(uuid())
+  resumeId  String   @unique  
+  vectorId  String   @unique  
+  createdAt DateTime @default(now())
+
+    resume    Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+}
