@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from './ui/button';
+import axios from 'axios';
 
 
 const candidateSchema = z.object({
@@ -84,9 +85,11 @@ export default function CandidateForm() {
   const handleClick = async () => {
 
     try {
+      const response = await axios.get("/api/create-index")
+      console.log(response.data)
       
     } catch (error) {
-      
+      console.error(error)
     }
   }
   const onSubmit = async (data: CandidateFormData) => {
@@ -119,7 +122,7 @@ export default function CandidateForm() {
             <p className="text-xl text-white/80">Submit your application and let AI match you with the perfect role</p>
           </div>
 
-          <Button onClick={handleCli}>Create Index</Button>
+          <Button onClick={handleClick}>Create Index</Button>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-xl transition-all duration-300 hover:shadow-2xl">

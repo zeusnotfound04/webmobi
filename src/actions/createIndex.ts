@@ -3,7 +3,7 @@
 import pinecone from "@/utils/pinecone"
 
 
-export async function createIndex() {
+export async function createIndex() : Promise<void> {
     try {
         
         await pinecone.createIndexForModel({
